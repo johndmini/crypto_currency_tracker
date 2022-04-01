@@ -14,13 +14,6 @@ const CoinDataProvider = (props) => {
   const [trending, setTrending] = useState({});
   const { coins } = searchResults;
 
-  const getData = () => {
-    axios
-      .get(
-        `${baseUrl}coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${amountShown}&page=${listPage}&sparkline=${showGraph}&price_change_percentage=${hourPrice}`
-      )
-      .then((res) => setCoinList(res.data));
-  };
   const searchTokens = (input) => {
     axios
       .get(`${baseUrl}search?query=${input}`)
@@ -56,12 +49,16 @@ const CoinDataProvider = (props) => {
   }, []);
 
   useEffect(() => {
-    getData();
+    axios
+      .get(
+        `${baseUrl}coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${amountShown}&page=${listPage}&sparkline=${showGraph}&price_change_percentage=${hourPrice}`
+      )
+      .then((res) => setCoinList(res.data));
     const interval = setInterval(() => getData(), 60000);
     return () => {
       clearInterval(interval);
     };
-  }, [amountShown, listPage]);
+  }, [amountShown, listPage, hourPrice, showGraph]);
 
   const handlePagination = (e, value) => {
     setListPage(value);
