@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-const baseUrl = 'https://api.coingecko.com/api/v3/'
+const baseUrl = 'https://api.coingecko.com/api/v3/';
 const CoinDataContext = React.createContext();
 const axios = require('axios').default;
 
@@ -49,12 +49,15 @@ const CoinDataProvider = (props) => {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(
-        `${baseUrl}coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${amountShown}&page=${listPage}&sparkline=${showGraph}&price_change_percentage=${hourPrice}`
-      )
-      .then((res) => setCoinList(res.data));
-    const interval = setInterval(() => getData(), 60000);
+    const interval = setInterval(
+      () =>
+        axios
+          .get(
+            `${baseUrl}coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${amountShown}&page=${listPage}&sparkline=${showGraph}&price_change_percentage=${hourPrice}`
+          )
+          .then((res) => setCoinList(res.data)),
+      60000
+    );
     return () => {
       clearInterval(interval);
     };
