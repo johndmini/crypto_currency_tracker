@@ -6,13 +6,20 @@ const axios = require('axios').default;
 const CoinDataProvider = (props) => {
   const [coinList, setCoinList] = useState([]);
   const [listPage, setListPage] = useState(1);
-  const [hourPrice, setHourPrice] = useState('1h');
   const [amountShown, setAmountShown] = useState(10);
   const [showGraph, setShowGraph] = useState(true);
   const [searchResults, setSearchResults] = useState({});
   const [targetToken, setTargetToken] = useState({});
   const [trending, setTrending] = useState({});
   const { coins } = searchResults;
+
+  const getData = () => {
+    axios
+      .get(
+        `${baseUrl}coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${amountShown}&page=${listPage}&sparkline=${showGraph}&price_change_percentage=24h`
+      )
+      .then((res) => setCoinList(res.data));
+  };
 
   const searchTokens = (input) => {
     axios
@@ -49,24 +56,12 @@ const CoinDataProvider = (props) => {
   }, []);
 
   useEffect(() => {
-    axios
-          .get(
-            `${baseUrl}coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${amountShown}&page=${listPage}&sparkline=${showGraph}&price_change_percentage=${hourPrice}`
-          )
-          .then((res) => setCoinList(res.data))
-    const interval = setInterval(
-      () =>
-        axios
-          .get(
-            `${baseUrl}coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${amountShown}&page=${listPage}&sparkline=${showGraph}&price_change_percentage=${hourPrice}`
-          )
-          .then((res) => setCoinList(res.data)),
-      60000
-    );
+    getData();
+    const interval = setInterval(() => getData(), 60000);
     return () => {
       clearInterval(interval);
     };
-  }, [amountShown, listPage, hourPrice, showGraph]);
+  },[amountShown, listPage]);
 
   const handlePagination = (e, value) => {
     setListPage(value);
@@ -74,10 +69,6 @@ const CoinDataProvider = (props) => {
 
   const handleAmountShown = (e) => {
     setAmountShown(e.target.value);
-  };
-
-  const handlPriceTimeline = () => {
-    setHourPrice();
   };
 
   const handleGraph = () => {
@@ -98,7 +89,6 @@ const CoinDataProvider = (props) => {
         handleGraph,
         handlePagination,
         handleAmountShown,
-        handlPriceTimeline,
         setAmountShown,
         handleTokenRender,
       }}
