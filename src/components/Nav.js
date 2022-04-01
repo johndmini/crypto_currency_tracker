@@ -21,7 +21,7 @@ export default function Nav() {
         <Button component={Link} to="/">
           Coins
         </Button>
-        <Button component={Link} to="/DeFiData">
+        <Button component={Link} to="/DeFiPage">
           DeFi Tokens
         </Button>
         <Button component={Link} to="/Trending">
