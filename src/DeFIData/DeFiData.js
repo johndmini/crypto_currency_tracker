@@ -30,7 +30,7 @@ export default function DefiData() {
         `${baseUrl}coins/markets?vs_currency=usd&category=decentralized-exchange&order=market_cap_desc&per_page=100&page=${listPage}&sparkline=${showDeFiGraph}&price_change_percentage=24h`
       )
       .then((res) => setDefiData(res.data));
-  }, [listPage, showDeFiGraph]);
+  }, [listPage]);
 
   const defiList = defiPerPage.map((defi) => (
     <DeFiPrice key={defi.id} {...defi} graph={showDeFiGraph} />
