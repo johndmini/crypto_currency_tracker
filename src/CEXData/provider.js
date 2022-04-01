@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 const baseUrl = 'https://api.coingecko.com/api/v3/'
 const CoinDataContext = React.createContext();
-const axios = require('axios');
+const axios = require('axios').default;
 
 const CoinDataProvider = (props) => {
   const [coinList, setCoinList] = useState([]);
