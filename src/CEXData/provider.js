@@ -49,6 +49,11 @@ const CoinDataProvider = (props) => {
   }, []);
 
   useEffect(() => {
+    axios
+          .get(
+            `${baseUrl}coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${amountShown}&page=${listPage}&sparkline=${showGraph}&price_change_percentage=${hourPrice}`
+          )
+          .then((res) => setCoinList(res.data))
     const interval = setInterval(
       () =>
         axios

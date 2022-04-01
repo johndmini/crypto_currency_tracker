@@ -12,7 +12,6 @@ export default function DefiData() {
   const [listPage, setListPage] = useState(1);
   const [perPage, setPerPage] = useState(50);
   const defiPerPage = defiData.slice(0, perPage);
-  console.log(defiData);
   const handleDeFiGraph = () => {
     setShowDeFiGraph(!showDeFiGraph);
   };
